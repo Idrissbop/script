@@ -1,7 +1,7 @@
 #!from gauapple.com buy apple id and premium apps from there 
-#!name = All In One Pro Max Ultimate
-#!desc = YouTube + Locket + SoundCloud + Spotify + Nhiều App khác
-#!author = Gấu Lỏz CUTO_Tổng hợp các URL trên mạng
+#!name = All In One Pro Max Ultimate + ChatGPT-5
+#!desc = YouTube + Locket + SoundCloud + Spotify + ChatGPT-5 + Nhiều App khác
+#!author = Gấu Lỏz CUTO + Idriss
 
 #Shadowrocket Unlock nhiều app vip
 
@@ -37,11 +37,8 @@ youtube.response = type=http-response,pattern=^https:\/\/youtubei\.googleapis\.c
 # ===== Spotify iOS15 (app2smile) =====
 #!name=Spotify(iOS15)
 #!desc=部分解锁premium,建议重新登录,音质不能设置为超高
-# 1. 搜索界面 歌单/歌曲可以随意切换完全播放
-# 2. 音乐库已点赞歌曲随意切换完全播放
 
 spotify-json = type=http-request,pattern=^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(artistview\/v1\/artist|album-entity-view\/v2\/album)\/,requires-body=0,script-path=https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-json.js
-
 spotify-proto = type=http-response,pattern=^https:\/\/(spclient\.wg\.spotify\.com|.*-spclient\.spotify\.com(:443)?)\/(bootstrap\/v1\/bootstrap|user-customization-service\/v1\/customize)$,requires-body=1,binary-body-mode=1,max-size=0,script-path=https://raw.githubusercontent.com/app2smile/rules/master/js/spotify-proto.js,script-update-interval=0
 
 #SoundCloud
@@ -74,8 +71,46 @@ deleteHeader = type=http-request,pattern=^https:\/\/api\.revenuecat\.com\/.+\/(r
 
 Lightroom = type=http-response,pattern=^https:\/\/photos\.adobe\.io\/v\d\/accounts,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/duyvinh09/Module_IOS/refs/heads/main/js/lightroom.js,script-update-interval=-1
 
+# ===== ChatGPT-5 Premium Unlock (وهمي) =====
+#!name=ChatGPT-5
+#!desc=فتح النسخة المدفوعة من ChatGPT-5 (محاكاة)
+
+# ChatGPT-5 API Response
+chatgpt5.request = type=http-request,pattern=^https:\/\/api\.openai\.com\/v1\/chat\/completions,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.request.js
+
+chatgpt5.response = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/(chat\/completions|models|subscription|dashboard\/billing\/subscription),requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.response.js,argument="{"model":"gpt-5-turbo","premium":true,"unlimited":true}"
+
+# ChatGPT-5 Subscription Check
+chatgpt5.subscription = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/dashboard\/billing\/subscription,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.subscription.js
+
+# ChatGPT-5 Headers Modification
+chatgpt5.headers = type=http-request,pattern=^https:\/\/api\.openai\.com\/v1\/,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.headers.js
+
+# ChatGPT-5 Web Interface
+chatgpt5.web = type=http-response,pattern=^https:\/\/chat\.openai\.com\/.*,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.web.js
+
+# ChatGPT-5 Plugin Access
+chatgpt5.plugins = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/plugins\/.*,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.plugins.js
+
+# ChatGPT-5 DALL-E Access
+chatgpt5.dalle = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/images\/generations,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.dalle.js
+
+# ChatGPT-5 GPT-4 Vision
+chatgpt5.vision = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/chat\/completions.*vision,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.vision.js
+
+# ChatGPT-5 Voice Mode
+chatgpt5.voice = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/audio\/.*,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.voice.js
+
+# ChatGPT-5 Code Interpreter
+chatgpt5.code = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/code-interpreter\/.*,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.code.js
+
+# ChatGPT-5 File Upload
+chatgpt5.files = type=http-response,pattern=^https:\/\/api\.openai\.com\/v1\/files\/.*,requires-body=1,max-size=-1,script-path=https://raw.githubusercontent.com/Idriss/ChatGPT5/main/chatgpt5.files.js
+
 [Map Local]
 ^https?:\/\/[\w-]+\.googlevideo\.com\/initplayback.+&oad data-type=text data="" status-code=200
+^https:\/\/api\.openai\.com\/v1\/models$ data-type=text data='{"object":"list","data":[{"id":"gpt-5-turbo","object":"model","created":1699222000,"owned_by":"openai","permission":[]},{"id":"gpt-4-vision-preview","object":"model","created":1699222000,"owned_by":"openai","permission":[]},{"id":"dall-e-3","object":"model","created":1699222000,"owned_by":"openai","permission":[]}]}' status-code=200
+^https:\/\/api\.openai\.com\/v1\/dashboard\/billing\/subscription$ data-type=text data='{"object":"subscription","has_payment_method":true,"canceled":false,"canceled_at":null,"delinquent":null,"access_until":4099770692,"soft_limit":999999,"hard_limit":999999,"system_hard_limit":999999,"soft_limit_usd":999999,"plan":{"title":"ChatGPT Plus Pro Max","id":"chatgpt-plus-pro"}}' status-code=200
 
 [MITM]
-hostname = %APPEND%, *.googlevideo.com, photos.adobe.io, youtubei.googleapis.com, www.youtube.com, s.youtube.com, -redirector*.googlevideo.com, premium*.truecaller.com, sub.store, api.revenuecat.com, api-mobile.soundcloud.com, api.picsart.com, us-central1-alight-creative.cloudfunctions.net, api-sub.meitu.com, api-account.kinemasters.com, ap*.intsig.net, api.mr.pixocial.com, newbeee-api.beautyplus.com, spclient.wg.spotify.com, *spclient.spotify.com
+hostname = %APPEND%, *.googlevideo.com, photos.adobe.io, youtubei.googleapis.com, www.youtube.com, s.youtube.com, -redirector*.googlevideo.com, premium*.truecaller.com, sub.store, api.revenuecat.com, api-mobile.soundcloud.com, api.picsart.com, us-central1-alight-creative.cloudfunctions.net, api-sub.meitu.com, api-account.kinemasters.com, ap*.intsig.net, api.mr.pixocial.com, newbeee-api.beautyplus.com, spclient.wg.spotify.com, *spclient.spotify.com, api.openai.com, chat.openai.com
